@@ -4,20 +4,19 @@ import java.util.List;
 import java.util.Optional;
 
 import com.example.Rating.Entity.Rating;
+import com.example.Rating.dto.Response.RatingResponseDTO;
+import com.example.Rating.dto.Update.RatingUpdateDTO;
+import com.example.Rating.dto.request.RatingRequestDTO;
 
 public interface RatingInterface {
 
-	 Rating saveRating(Rating rating);
+    RatingResponseDTO saveRating(RatingRequestDTO requestDTO);
 
-	   
-	    List<Rating> getAllRatings();
+    List<RatingResponseDTO> getAllRatings();
 
-	   
-	    List<Rating> getRatingsByUserId(Long userId);
+    RatingResponseDTO updateRating(Long ratingId, RatingUpdateDTO updateDTO);
 
-	    
-	    
-	    Rating updateRating(Rating rating);
-	   
-	    void deleteRating(Long ratingId);
+    void deleteRating(Long ratingId);
+
+    List<RatingResponseDTO> getRatingsByUserId(Long userId);
 }

@@ -7,5 +7,5 @@ import com.example.Hotel.Entity.Hotel;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Long>{
-
+	boolean existsByNameAndLocation(String name, String location);
 }

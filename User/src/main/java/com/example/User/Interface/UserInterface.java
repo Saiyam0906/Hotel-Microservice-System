@@ -1,16 +1,23 @@
 package com.example.User.Interface;
 
-
-import java.util.List;
-
-
-import com.example.User.Entity.UserEntity;
+import com.example.User.Request.UserRequestDto;
+import com.example.User.Response.ProfilePhotoUploadResponse;
+import com.example.User.Response.UserResponseDto;
+import com.example.User.Update.UserUpdateDto;
 
 public interface UserInterface {
 
-	UserEntity saveUser(UserEntity user);
+	UserResponseDto createUser(UserRequestDto requestDto);
 	
-	List<UserEntity> getAlluser();
+	UserResponseDto getUserById(Long id);
 	
-	UserEntity getUser(Long userId);
+	UserResponseDto updateUser(Long id, UserUpdateDto updateDto);
+	
+    void deleteUser(Long id);
+    
+    UserResponseDto updateProfilePhoto(Long id, String objectKey);
+
+	ProfilePhotoUploadResponse generateProfilePhotoUploadUrl(Long id, String contentType);
+    
+    
 }

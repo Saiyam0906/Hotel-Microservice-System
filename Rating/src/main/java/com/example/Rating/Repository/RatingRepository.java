@@ -16,5 +16,8 @@ public interface RatingRepository extends JpaRepository<Rating, Long>{
 	void deleteById(Long ratingId);
 
 	List<Rating> findByUserId(Long userId);
+	
+	
+    boolean existsByUserIdAndHotelId(Long userId, Long hotelId); // ← add this
 
 }

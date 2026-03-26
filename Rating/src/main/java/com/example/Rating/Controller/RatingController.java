@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.Rating.Entity.Rating;
+import com.example.Rating.Interface.RatingInterface;
 import com.example.Rating.Service.RatingService;
+import com.example.Rating.dto.Response.ApiResponse;
+import com.example.Rating.dto.Response.RatingResponseDTO;
+import com.example.Rating.dto.Update.RatingUpdateDTO;
+import com.example.Rating.dto.request.RatingRequestDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,45 +27,84 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RatingController {
 	
-	private final RatingService ratingService;
+	private final RatingInterface ratingService;
+	
+	
+	@PostMapping
+    public ResponseEntity<ApiResponse<RatingResponseDTO>> createRating(
+            @RequestBody RatingRequestDTO requestDTO) {
 
-    // Create a rating
-    @PostMapping
-    public ResponseEntity<Rating> createRating(@RequestBody
-    		Rating rating) {
-        Rating savedRating = ratingService.saveRating(rating);
-        return ResponseEntity.ok(savedRating);
+        RatingResponseDTO rating = ratingService.saveRating(requestDTO);
+
+        ApiResponse<RatingResponseDTO> response = ApiResponse.<RatingResponseDTO>builder()
+                .success(true)
+                .message("Rating created successfully")
+                .data(rating)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+	
+	@GetMapping
+    public ResponseEntity<ApiResponse<List<RatingResponseDTO>>> getAllRatings() {
+
+        List<RatingResponseDTO> ratings = ratingService.getAllRatings();
+
+        ApiResponse<List<RatingResponseDTO>> response = ApiResponse.<List<RatingResponseDTO>>builder()
+                .success(true)
+                .message("Ratings fetched successfully")
+                .data(ratings)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+	
+	@GetMapping("/user/{userId}")
+    public ResponseEntity<ApiResponse<List<RatingResponseDTO>>> getRatingsByUserId(
+            @PathVariable Long userId) {
+
+        List<RatingResponseDTO> ratings = ratingService.getRatingsByUserId(userId);
+
+        ApiResponse<List<RatingResponseDTO>> response = ApiResponse.<List<RatingResponseDTO>>builder()
+                .success(true)
+                .message("User ratings fetched successfully")
+                .data(ratings)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+	
+	@PutMapping("/{ratingId}")
+    public ResponseEntity<ApiResponse<RatingResponseDTO>> updateRating(
+            @PathVariable Long ratingId,
+            @RequestBody RatingUpdateDTO updateDTO) {
+
+        RatingResponseDTO updated = ratingService.updateRating(ratingId, updateDTO);
+
+        ApiResponse<RatingResponseDTO> response = ApiResponse.<RatingResponseDTO>builder()
+                .success(true)
+                .message("Rating updated successfully")
+                .data(updated)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+	
+	@DeleteMapping("/{ratingId}")
+    public ResponseEntity<ApiResponse<Void>> deleteRating(@PathVariable Long ratingId) {
+
+        ratingService.deleteRating(ratingId);
+
+        ApiResponse<Void> response = ApiResponse.<Void>builder()
+                .success(true)
+                .message("Rating deleted successfully")
+                .data(null)
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
-    // Get all ratings
-    @GetMapping
-    
-    public ResponseEntity<List<Rating>> getAllRatings() {
-        List<Rating> ratings = ratingService.getAllRatings();
-        return ResponseEntity.ok(ratings);
-    }
 
-    // Get rating by ID
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<List<Rating>> getRatingsByUserId(@PathVariable Long userId) {
-
-        List<Rating> ratings = ratingService.getRatingsByUserId(userId);
-        return ResponseEntity.ok(ratings);
-    }
-
-    // Update a rating
-    @PutMapping("/{id}")
-    public ResponseEntity<Rating> updateRating(@PathVariable("id") Long id, @RequestBody Rating rating) {
-        rating.setRatingId(id); // Ensure the ID is set for update
-        Rating updatedRating = ratingService.updateRating(rating);
-        return ResponseEntity.ok(updatedRating);
-    }
-
-    // Delete a rating
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRating(@PathVariable("id") Long id) {
-        ratingService.deleteRating(id);
-        return ResponseEntity.noContent().build();
-    }
+   
 
 }
