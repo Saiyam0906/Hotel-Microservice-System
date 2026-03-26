@@ -1,0 +1,39 @@
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+build/
+
+# Logs
+*.log
+
+# IDE
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Env files
+.env
+
+# Application secrets
+application-*.properties
+application-*.yml
+
+# Compiled class
+*.class
+
+# Docker
+docker-compose.override.yml
